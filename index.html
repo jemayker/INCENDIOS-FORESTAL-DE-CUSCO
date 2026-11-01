@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_c8db12529c1f1a41a6e8abc1d24282a3 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 700.0px;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/digidem/leaflet-side-by-side@2.0.0/leaflet-side-by-side.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+</head>
+<body>
+    
+    
+<style>
+.gis-panel {
+    position: fixed;
+    top: 12px;
+    left: 55px;
+    z-index: 9999;
+    background: #17324d;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 7px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    font-family: Arial, sans-serif;
+    max-width: 340px;
+    pointer-events: none;
+}
+
+.gis-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.gis-subtitle {
+    font-size: 11px;
+    color: #d1e3f0;
+    line-height: 1.5;
+}
+
+.gis-date {
+    position: fixed;
+    bottom: 155px;
+    z-index: 9998;
+    background: rgba(23,50,77,0.92);
+    color: white;
+    padding: 9px 13px;
+    border-radius: 5px;
+    font: bold 12px Arial;
+    pointer-events: none;
+}
+
+.gis-left { left: 12px; }
+.gis-right { right: 12px; }
+
+.gis-legend {
+    position: fixed;
+    bottom: 35px;
+    left: 165px;
+    z-index: 9998;
+    background: white;
+    color: #243b53;
+    padding: 12px 15px;
+    border-radius: 6px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+    font: 12px Arial;
+    max-width: 250px;
+    pointer-events: none;
+}
+
+.gis-legend-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.gis-limit {
+    display: inline-block;
+    width: 25px;
+    border-top: 3px solid #00ffff;
+    margin-right: 7px;
+    vertical-align: middle;
+}
+</style>
+
+<div class="gis-panel">
+    <div class="gis-title">
+        ALTO PICHIGUA | VISOR MULTITEMPORAL
+    </div>
+    <div class="gis-subtitle">
+        Google Earth Engine | Sentinel-2 SR<br>
+        Comparación satelital 2026<br>
+        Falso color SWIR: B12 - B8 - B4<br>
+        Área de estudio: 36,089.10 ha
+    </div>
+</div>
+
+<div class="gis-date gis-left">
+    ANTES | 20/05/2026
+</div>
+
+<div class="gis-date gis-right">
+    DESPUÉS | 08/08/2026
+</div>
+
+<div class="gis-legend">
+    <div class="gis-legend-title">LEYENDA</div>
+    <div>
+        <span class="gis-limit"></span>
+        Límite de Alto Pichigua
+    </div>
+    <div style="margin-top:8px">
+        Sentinel-2 | SWIR (12-8-4)
+    </div>
+    <div style="margin-top:5px;color:#667788">
+        Pixel mostrado: remuestreo de B12 (20 m)
+        y bandas de 10 m
+    </div>
+</div>
+    
+            <div class="folium-map" id="map_c8db12529c1f1a41a6e8abc1d24282a3" ></div>
+        
+    
+            
+            <style>
+                #export {
+                    position: absolute;
+                    top: 5px;
+                    right: 10px;
+                    z-index: 999;
+                    background: white;
+                    color: black;
+                    padding: 6px;
+                    border-radius: 4px;
+                    font-family: 'Helvetica Neue';
+                    cursor: pointer;
+                    font-size: 12px;
+                    text-decoration: none;
+                    top: 90px;
+                }
+            </style>
+            <a href='#' id='export'>Export</a>
+            
+        
+</body>
+<script>
+    
+    
+            var map_c8db12529c1f1a41a6e8abc1d24282a3 = L.map(
+                "map_c8db12529c1f1a41a6e8abc1d24282a3",
+                {
+                    center: [-14.73758535301906, -71.22345534180926],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": true,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+
+            
+
+        
+    
+            var tile_layer_fbd55679eb16ff8ccd6f7640f64b90a1 = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Esri World Imagery",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_fbd55679eb16ff8ccd6f7640f64b90a1.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            var tile_layer_a5d42281b4baabe71379a18e5de51ab0 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var tile_layer_cc094f77a4ce3cb7bef56fcff9597a06 = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/proyecto-de-telede/maps/b250337548f5addb03586d84da03648b-d75b567c4ae2f0d6b10162c160e0bfae/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 22,
+  "maxNativeZoom": 22,
+  "noWrap": false,
+  "attribution": "Copernicus Sentinel-2 / Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_cc094f77a4ce3cb7bef56fcff9597a06.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            var tile_layer_a9f325eb0fd1526f65e39e91f405dfbb = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/proyecto-de-telede/maps/a0a0e82735160d01c2b67c448b387f8a-445afe3c1d5b776cf5c0c91fbe92e943/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 22,
+  "maxNativeZoom": 22,
+  "noWrap": false,
+  "attribution": "Copernicus Sentinel-2 / Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a9f325eb0fd1526f65e39e91f405dfbb.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            var side_by_side_layers_bce14dd44e25ab443a9b238a89e9941e = L.control.sideBySide(
+                tile_layer_cc094f77a4ce3cb7bef56fcff9597a06, tile_layer_a9f325eb0fd1526f65e39e91f405dfbb
+            ).addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            var tile_layer_e5012d0ea45f55b7b228156dd2576398 = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/proyecto-de-telede/maps/99b407839376f81f73a5fd8428c0c305-548d93d022c5cadfef7e2f77b5027eae/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Google Earth Engine | Alto Pichigua",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e5012d0ea45f55b7b228156dd2576398.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topright",
+  "title": "Pantalla completa",
+  "titleCancel": "Salir de pantalla completa",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            var measure_control_ddbe492a1e80e91932d96bbff830187d = new L.Control.Measure(
+                {
+  "position": "topright",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "kilometers",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "hectares",
+});
+            map_c8db12529c1f1a41a6e8abc1d24282a3.addControl(measure_control_ddbe492a1e80e91932d96bbff830187d);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            var mouse_position_57c4f24ee24a82bc3662317bc74df902 = new L.Control.MousePosition(
+                {
+  "position": "bottomright",
+  "separator": " | ",
+  "emptyString": "Unavailable",
+  "lngFirst": false,
+  "numDigits": 6,
+  "prefix": "Coordenadas",
+}
+            );
+            mouse_position_57c4f24ee24a82bc3662317bc74df902.options["latFormatter"] =
+                undefined;
+            mouse_position_57c4f24ee24a82bc3662317bc74df902.options["lngFormatter"] =
+                undefined;
+            map_c8db12529c1f1a41a6e8abc1d24282a3.addControl(mouse_position_57c4f24ee24a82bc3662317bc74df902);
+        
+    
+            var tile_layer_68dff0f600da99610ed0293b1aa43aa7 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detect_retina": false, "max_native_zoom": 19, "max_zoom": 19, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+            var mini_map_647811722eb2728354d8b6c3f84624ec = new L.Control.MiniMap(
+                tile_layer_68dff0f600da99610ed0293b1aa43aa7,
+                {
+  "position": "bottomleft",
+  "width": 140,
+  "height": 110,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": true,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_c8db12529c1f1a41a6e8abc1d24282a3.addControl(mini_map_647811722eb2728354d8b6c3f84624ec);
+        
+    
+            var options = {
+              position: "topright",
+              draw: {"circle": false, "circlemarker": false, "marker": true, "polygon": true, "polyline": true, "rectangle": true},
+              edit: {},
+            }
+                // FeatureGroup is to store editable layers.
+                var drawnItems_draw_control_986af8f6ebb439feb9f026a800cb321d =
+                    new L.featureGroup().addTo(
+                        map_c8db12529c1f1a41a6e8abc1d24282a3
+                    );
+
+            options.edit.featureGroup = drawnItems_draw_control_986af8f6ebb439feb9f026a800cb321d;
+            var draw_control_986af8f6ebb439feb9f026a800cb321d = new L.Control.Draw(
+                options
+            ).addTo( map_c8db12529c1f1a41a6e8abc1d24282a3 );
+            map_c8db12529c1f1a41a6e8abc1d24282a3.on(L.Draw.Event.CREATED, function(e) {
+                var layer = e.layer,
+                    type = e.layerType;
+                var coords = JSON.stringify(layer.toGeoJSON());
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                });
+                drawnItems_draw_control_986af8f6ebb439feb9f026a800cb321d.addLayer(layer);
+            });
+            map_c8db12529c1f1a41a6e8abc1d24282a3.on('draw:created', function(e) {
+                drawnItems_draw_control_986af8f6ebb439feb9f026a800cb321d.addLayer(e.layer);
+            });
+
+            
+            document.getElementById('export').onclick = function(e) {
+                var data = drawnItems_draw_control_986af8f6ebb439feb9f026a800cb321d.toGeoJSON();
+                var convertedData = 'text/json;charset=utf-8,'
+                    + encodeURIComponent(JSON.stringify(data));
+                document.getElementById('export').setAttribute(
+                    'href', 'data:' + convertedData
+                );
+                document.getElementById('export').setAttribute(
+                    'download', "data.geojson"
+                );
+            }
+            
+        
+    
+            var layer_control_7a57cd1a9f1b42e824b8af651dddfaba_layers = {
+                base_layers : {
+                    "ESRI | Imagen satelital" : tile_layer_fbd55679eb16ff8ccd6f7640f64b90a1,
+                    "Mapa de calles" : tile_layer_a5d42281b4baabe71379a18e5de51ab0,
+                },
+                overlays :  {
+                    "L\u00edmite de Alto Pichigua" : tile_layer_e5012d0ea45f55b7b228156dd2576398,
+                },
+            };
+            let layer_control_7a57cd1a9f1b42e824b8af651dddfaba = L.control.layers(
+                layer_control_7a57cd1a9f1b42e824b8af651dddfaba_layers.base_layers,
+                layer_control_7a57cd1a9f1b42e824b8af651dddfaba_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+
+        
+    
+            map_c8db12529c1f1a41a6e8abc1d24282a3.fitBounds(
+                [[-14.841395454518443, -71.36822450109217], [-14.63377525151968, -71.07868618252635]],
+                {}
+            );
+        
+    
+            tile_layer_fbd55679eb16ff8ccd6f7640f64b90a1.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_cc094f77a4ce3cb7bef56fcff9597a06.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_a9f325eb0fd1526f65e39e91f405dfbb.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_e5012d0ea45f55b7b228156dd2576398.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_fbd55679eb16ff8ccd6f7640f64b90a1.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_cc094f77a4ce3cb7bef56fcff9597a06.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_a9f325eb0fd1526f65e39e91f405dfbb.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+    
+            tile_layer_e5012d0ea45f55b7b228156dd2576398.addTo(map_c8db12529c1f1a41a6e8abc1d24282a3);
+        
+</script>
+</html>
